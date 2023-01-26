@@ -1,12 +1,12 @@
 com:
   jesys:
-    service: discord, boosty, rulate
+    service: 
     discord:
-      token: "MTA2NzQwMTU5NzE5NTM5NTA4Mg.GN19wQ.UbIrfhcZzmfN4_BxeN6R2GCPpcCuQdVNW-CKX0"
-      channelId: "874208586555879444"
+      token: 
+      channelId: 
     boosty:
-      author-name: "https://boosty.to/jesys"
+      author-name: 
     rulate:
       book:
-        - "https://tl.rulate.ru/book/36947"
+        
 
