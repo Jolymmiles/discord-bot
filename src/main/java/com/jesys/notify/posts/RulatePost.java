@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 @Data
 public class RulatePost extends AbstractPost {
     private String status;
+    private String Title;
 
     @Override
     protected LocalDateTime convertStringToDate(String s) {

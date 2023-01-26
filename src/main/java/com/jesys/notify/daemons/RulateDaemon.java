@@ -46,16 +46,21 @@ public class RulateDaemon extends Daemon{
             var feed = matcherForJson.group();
             var matcherForPost = createMatcher(feed, "<tr id=\\\"c_\\d{6}\\\" data-id=\\\"\\d{6}\\\" class=\\\"chapter_row  \\\">.*</tr>");
             while (matcherForPost.find()) {
-
-                var linkAndDate = matcherForPost.group().split(">");
-                var matcherForLink = createMatcher(linkAndDate[0], "href=\"(.*?)\"(.*?)");
+                var rawPost = matcherForPost.group();
+                var matcherForDataInPost = createMatcher(rawPost, "<td class=\\\"t\\\"><a (.*?)</a></td>");
+                var linkAndTitle = matcherForDataInPost.group().split(">");
+                var matcherForLink = createMatcher(linkAndTitle[0], "href=\"(.*?)\"(.*?)");
                 if (!matcherForLink.find()) {
                     log.info("No match found.");
                     return;
                 }
                 var post = new RulatePost();
                 post.setLink("https://tl.rulate.ru/" + matcherForLink.group(1));
-                post.setDateOfPost(linkAndDate[1]);
+                post.setTitle(linkAndTitle[1]);
+                //post.setStatus();
+                //post.setDateOfPost();
+
+
                 listOfPosts.add(post);
             }
             var s = listOfPosts.stream().sorted(Comparator.comparing(RulatePost::getDateOfPost)).toList();
