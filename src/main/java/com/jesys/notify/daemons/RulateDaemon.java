@@ -5,6 +5,8 @@ import com.jesys.notify.posts.RulatePost;
 import com.jesys.notify.services.NotificationsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +19,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 @Slf4j
-@Component
+@ConditionalOnExpression("#{T(java.util.Arrays).asList(environment['com.jesys.service']).contains('rulate')}")
 public class RulateDaemon extends Daemon{
 
     private static LocalDateTime lastPostTime = LocalDateTime.now(ZoneId.of("Europe/Moscow"));

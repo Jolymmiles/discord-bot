@@ -5,6 +5,7 @@ import com.jesys.notify.services.NotificationsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +17,7 @@ import java.util.HashSet;
 
 @Slf4j
 @Component
+@ConditionalOnExpression("#{T(java.util.Arrays).asList(environment['com.jesys.service']).contains('boosty')}")
 public class BoostyDaemon extends Daemon {
 
     @Autowired
