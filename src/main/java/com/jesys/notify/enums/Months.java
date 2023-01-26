@@ -5,7 +5,7 @@ public enum Months {
     фев("02"),
     мар("03"),
     апр("04"),
-    май("05"),
+    май("05"), мая("05"),
     июн("06"),
     июл("07"),
     авг("08"),
@@ -14,14 +14,14 @@ public enum Months {
     ноя("11"),
     дек("12");
 
-    private final String english;
+    private final String numeric;
 
-    Months(String english) {
-        this.english = english;
+    Months(String numeric) {
+        this.numeric = numeric;
     }
 
-    public String getEnglish() {
-        return english;
+    public String getNumeric() {
+        return numeric;
     }
 
 

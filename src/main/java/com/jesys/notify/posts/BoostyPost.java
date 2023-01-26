@@ -16,7 +16,7 @@ public class BoostyPost extends AbstractPost {
         Months month = Months.valueOf(parts[1].replace(".",""));
         String[] time = parts[3].split(":");
         LocalDate localDate = LocalDate.now();
-        String newString = parts[0] + " " + month.getEnglish() + " " + localDate.getYear() + " " + time[0] + ":" + time[1];
+        String newString = parts[0] + " " + month.getNumeric() + " " + localDate.getYear() + " " + time[0] + ":" + time[1];
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MM yyyy HH:mm");
         return LocalDateTime.parse(newString, formatter);
     }
