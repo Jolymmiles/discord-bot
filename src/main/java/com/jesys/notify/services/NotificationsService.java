@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class NotificationsBoostyService implements NotificationsServiceImpl {
+public class NotificationsService implements NotificationsServiceImpl {
 
     private final DiscordApi discordApi;
 
@@ -17,7 +17,7 @@ public class NotificationsBoostyService implements NotificationsServiceImpl {
     private String channelId;
 
     @Autowired
-    public NotificationsBoostyService(@Qualifier("discordApiClient") DiscordApi discordApi) {
+    public NotificationsService(@Qualifier("discordApiClient") DiscordApi discordApi) {
         this.discordApi = discordApi;
     }
 

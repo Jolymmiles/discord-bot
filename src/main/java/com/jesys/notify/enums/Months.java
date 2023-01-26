@@ -1,4 +1,4 @@
-package com.jesys.notify;
+package com.jesys.notify.enums;
 
 public enum Months {
     янв("01"),

@@ -1,7 +1,7 @@
 package com.jesys.notify.daemons;
 
 import com.jesys.notify.posts.BoostyPost;
-import com.jesys.notify.services.NotificationsBoostyService;
+import com.jesys.notify.services.NotificationsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,22 +9,17 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-public class BoostyDaemon implements Daemon {
+public class BoostyDaemon extends Daemon {
 
     @Autowired
-    NotificationsBoostyService notificationsBoostyService;
+    private NotificationsService notificationsService;
     @Value("${com.jesys.boosty.author-name}")
     private String url;
     private static LocalDateTime lastPostTime = LocalDateTime.now(ZoneId.of("Europe/Moscow"));
@@ -34,7 +29,7 @@ public class BoostyDaemon implements Daemon {
     public void checkNewPosts() throws IOException {
         log.info("Check: " + url);
         var listOfPosts = new HashSet<BoostyPost>();
-        var json = readJsonFromUrl();
+        var json = readJsonFromUrl(url);
         var matcherForJson = createMatcher(json, "(?<=<div class=\\\"Feed_feed_vmBqX\\\">)(.*)(?=\\\">)(.*)(?=</div>)");
 
         if (!matcherForJson.find()) {
@@ -56,12 +51,12 @@ public class BoostyDaemon implements Daemon {
             post.setDateOfPost(linkAndDate[1]);
             listOfPosts.add(post);
         }
-        var s = listOfPosts.stream().sorted(Comparator.comparing(BoostyPost::getDateOfPost)).collect(Collectors.toList());
+        var s = listOfPosts.stream().sorted(Comparator.comparing(BoostyPost::getDateOfPost)).toList();
         for (BoostyPost boostyPost : s) {
             var postTime = boostyPost.getDateOfPost();
             if (postTime.isAfter(lastPostTime)) {
                 log.info(boostyPost.toString());
-                notificationsBoostyService.sendMessage(boostyPost);
+                notificationsService.sendMessage(boostyPost);
                 lastPostTime = boostyPost.getDateOfPost();
 
             }
@@ -71,16 +66,4 @@ public class BoostyDaemon implements Daemon {
 
     }
 
-    private String readJsonFromUrl() throws IOException {
-        log.info("Fetch - " + url);
-        try (Scanner scanner = new Scanner(new URL(url).openStream(), "UTF-8")) {
-            scanner.useDelimiter("\\A");
-            return scanner.next();
-        }
-    }
-
-    private Matcher createMatcher(String text, String regex) {
-        Pattern pattern = Pattern.compile(regex);
-        return pattern.matcher(text);
-    }
 }

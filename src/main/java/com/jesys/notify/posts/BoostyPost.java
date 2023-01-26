@@ -1,6 +1,6 @@
 package com.jesys.notify.posts;
 
-import com.jesys.notify.Months;
+import com.jesys.notify.enums.Months;
 import lombok.Data;
 
 import java.time.LocalDate;
